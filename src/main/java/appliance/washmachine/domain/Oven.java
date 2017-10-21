@@ -7,8 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class WashMachine extends Appliance {
-
-
+public class Oven extends Appliance {
 
 }
