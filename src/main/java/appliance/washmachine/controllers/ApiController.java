@@ -1,65 +1,100 @@
 package appliance.washmachine.controllers;
 
-import appliance.washmachine.domain.*;
-import appliance.washmachine.domain.Appliance.State;
-
+import appliance.washmachine.service.WashMachineService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ApiController {
 
-    private final ApplianceRepository applianceRepository;
+    private final WashMachineService washMachineService;
 
-
-    public ApiController(ApplianceRepository applianceRepository) {
-        this.applianceRepository = applianceRepository;
+    public ApiController(WashMachineService washMachineService) {
+        this.washMachineService = washMachineService;
     }
-
 
     @RequestMapping(path = "/createWashMachine",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String createWashMachine(){
-            WashMachine wm = new WashMachine();
-            applianceRepository.save(wm);
-            return "new washing machine has been created";
+    public ResponseEntity<Object> createWashMachine() {
+        return new ResponseEntity<Object>(washMachineService.createWashMachine().toString(), HttpStatus.OK);
     }
-
-    @RequestMapping(path = "/createOven",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String createOven(){
-        Oven oven = new Oven();
-        applianceRepository.save(oven);
-        return "new oven has been created";
-    }
-
 
     @RequestMapping(path = "getState/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getState(@PathVariable("id") long id) {
-            Appliance appliance = applianceRepository.findOne(id);
-            return appliance.getState().toString();
+    public ResponseEntity<Object> getState(@PathVariable("id") long id) {
+        return new ResponseEntity<Object>(washMachineService.getWashMachineById(id).toString(), HttpStatus.OK);
     }
-
 
     @RequestMapping(path = "switch/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String pushSwitch (@PathVariable("id") long id) {
-        Appliance appliance = applianceRepository.findOne(id);
-        State newState = appliance.getState() == State.ON ? State.OFF : State.ON;
-        appliance.setState(newState);
-        applianceRepository.save(appliance);
-        return appliance.getState().toString();
+    public ResponseEntity<Object> pushSwitch(@PathVariable("id") long id) {
+        return new ResponseEntity<Object>(washMachineService.pushSwitch(id).toString(), HttpStatus.OK);
     }
 
+    @RequestMapping(path = "{id}/setCottonsWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> setCottonsWash(@PathVariable("id") long id) {
+        return washMachineService.setCottonsWash(id);
+    }
+
+    @RequestMapping(path = "{id}/setQuickWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> setQuickWash(@PathVariable("id") long id) {
+        return washMachineService.setQuickWash(id);
+    }
+
+    @RequestMapping(path = "{id}/setMixedWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> setMixedWash(@PathVariable("id") long id) {
+        return washMachineService.setMixedWash(id);
+    }
+
+    @RequestMapping(path = "{id}/setDelicateWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> setDelicateWash(@PathVariable("id") long id) {
+        return washMachineService.setDelicateWash(id);
+    }
+
+    @RequestMapping(path = "{id}/setWoolWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> setWoolWash(@PathVariable("id") long id) {
+        return washMachineService.setWoolWash(id);
+    }
+
+    @RequestMapping(path = "{id}/customCurrentWash",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> customCurrentWash(@PathVariable ("id") long id, @RequestParam(value="temperature", required = false) Integer waterTemperature, @RequestParam (value ="spin", required = false) Integer spin) {
+            return washMachineService.customCurrentWash(id, waterTemperature, spin);
+    }
+
+
+    @RequestMapping(path = "{id}/startAndPauseButton",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> startWashing(@PathVariable("id") long id) {
+        return washMachineService.pushStartAndPauseButton(id);
+    }
 
 }

@@ -23,6 +23,14 @@ public abstract class Appliance {
     @Enumerated(EnumType.STRING)
     private State state = State.OFF;
 
+    public void switchOn(){
+        this.state = State.ON;
+    }
+
+    public void switchOff(){
+        this.state = State.OFF;
+    }
+
     public enum State {
         ON,
         OFF
