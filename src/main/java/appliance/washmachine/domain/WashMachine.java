@@ -2,6 +2,8 @@ package appliance.washmachine.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.Duration;
 import java.util.Date;
@@ -41,6 +43,23 @@ public class WashMachine extends Appliance {
     @Column
     @Getter @Setter
     private Duration time = Duration.ZERO;
+
+    @JsonIgnore
+    public boolean isStopped(){
+        return this.washingState == WashingState.STOPPED;
+    }
+    @JsonIgnore
+    public boolean isPaused(){
+        return this.washingState == WashingState.PAUSE;
+    }
+    @JsonIgnore
+    public boolean isOn(){
+        return this.getState() == State.ON;
+    }
+    @JsonIgnore
+    public boolean isStartable(){
+        return this.waterTemperature != 0 && this.spin != 0 && !this.time.isZero() && this.washingState != WashingState.PROCESS;
+    }
 
     public void startWashing(){
         this.startWashingDate = new Date();
@@ -98,22 +117,6 @@ public class WashMachine extends Appliance {
         this.waterTemperature = 30;
         this.spin = 800;
         this.washCycle = WashCycle.WOOL;
-    }
-
-    public boolean isStopped(){
-        return this.washingState == WashingState.STOPPED;
-    }
-
-    public boolean isPaused(){
-        return this.washingState == WashingState.PAUSE;
-    }
-
-    public boolean isOn(){
-        return this.getState() == State.ON;
-    }
-
-    public boolean isStartable(){
-        return this.waterTemperature != 0 && this.spin != 0 && !this.time.isZero() && this.washingState != WashingState.PROCESS;
     }
 
     public enum WashCycle {

@@ -21,15 +21,15 @@ public class ApiController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Object> createWashMachine() {
-        return new ResponseEntity<Object>(washMachineService.createWashMachine().toString(), HttpStatus.OK);
+        return new ResponseEntity<Object>(washMachineService.createWashMachine(), HttpStatus.OK);
     }
 
-    @RequestMapping(path = "getState/{id}",
+    @RequestMapping(path = "/getState/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Object> getState(@PathVariable("id") long id) {
-        return new ResponseEntity<Object>(washMachineService.getWashMachineById(id).toString(), HttpStatus.OK);
+        return new ResponseEntity<Object>(washMachineService.getWashMachineById(id), HttpStatus.OK);
     }
 
     @RequestMapping(path = "switch/{id}",
@@ -37,7 +37,7 @@ public class ApiController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Object> pushSwitch(@PathVariable("id") long id) {
-        return new ResponseEntity<Object>(washMachineService.pushSwitch(id).toString(), HttpStatus.OK);
+        return new ResponseEntity<Object>(washMachineService.pushSwitch(id), HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}/setCottonsWash",

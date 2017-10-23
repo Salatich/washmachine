@@ -9,6 +9,8 @@ public interface WashMachineService {
 
     public WashMachine getWashMachineById(Long id);
 
+    public void save(WashMachine wm);
+
     public WashMachine pushSwitch(Long id);
 
     public ResponseEntity<Object> setCottonsWash(Long id);
@@ -24,7 +26,5 @@ public interface WashMachineService {
     public ResponseEntity<Object> customCurrentWash(Long id, Integer waterTemperature, Integer spin);
 
     public ResponseEntity<Object> pushStartAndPauseButton(Long id);
-
-
 
 }

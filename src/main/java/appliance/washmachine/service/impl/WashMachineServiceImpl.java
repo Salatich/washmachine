@@ -25,6 +25,11 @@ public class WashMachineServiceImpl implements WashMachineService {
     }
 
     @Override
+    public void save(WashMachine wm) {
+        washMachineRepository.save(wm);
+    }
+
+    @Override
     public WashMachine getWashMachineById(Long id) {
         return washMachineRepository.findOne(id);
     }
@@ -59,7 +64,7 @@ public class WashMachineServiceImpl implements WashMachineService {
                         return new ResponseEntity<Object>("Err: spin is out of range!", HttpStatus.OK);
                 }
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Object>("You cant set temperature or spin without wash cycle :(",HttpStatus.OK);
             }
@@ -75,7 +80,7 @@ public class WashMachineServiceImpl implements WashMachineService {
             if(wm.isStopped()){
                 wm.setCottonsWash();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else{
                 return new ResponseEntity<Object>("Err: washing machine is not stopped",HttpStatus.OK);
             }
@@ -91,7 +96,7 @@ public class WashMachineServiceImpl implements WashMachineService {
             if(wm.isStopped()){
             wm.setQuickWash();
             washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else{
                 return new ResponseEntity<Object>("Err: washing machine is not stopped",HttpStatus.OK);
             }
@@ -107,7 +112,7 @@ public class WashMachineServiceImpl implements WashMachineService {
             if(wm.isStopped()){
                 wm.setMixedWash();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else  {
                 return new ResponseEntity<Object>("Err: washing machine is not stopped",HttpStatus.OK);
             }
@@ -123,7 +128,7 @@ public class WashMachineServiceImpl implements WashMachineService {
             if(wm.isStopped()){
                 wm.setDelicateWash();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else  {
                 return new ResponseEntity<Object>("Err: washing machine is not stopped",HttpStatus.OK);
             }
@@ -139,7 +144,7 @@ public class WashMachineServiceImpl implements WashMachineService {
             if(wm.isStopped()){
                 wm.setWoolWash();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Object>("Err: washing machine is not stopped",HttpStatus.OK);
             }
@@ -156,18 +161,18 @@ public class WashMachineServiceImpl implements WashMachineService {
                 if(wm.isStartable()) {
                     wm.startWashing();
                     washMachineRepository.save(wm);
-                    return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                    return new ResponseEntity<Object>(wm, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<Object>("Err: not enough params for start washing!",HttpStatus.OK);
                 }
             } else if(wm.isPaused()){
                 wm.continueWashing();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             } else {
                 wm.pauseWashing();
                 washMachineRepository.save(wm);
-                return new ResponseEntity<Object>(wm.toString(), HttpStatus.OK);
+                return new ResponseEntity<Object>(wm, HttpStatus.OK);
             }
         } else {
             return new ResponseEntity<Object>("Err: washing machine is off :(", HttpStatus.OK);
